@@ -20,6 +20,9 @@ export { easingPresets } from "./easings.js";
 // Errors
 export { MultitrackError } from "./errors.js";
 
+// Warnings
+export { resetWarnings } from "./warnings.js";
+
 // Emitter
 export { Emitter } from "./emitter.js";
 

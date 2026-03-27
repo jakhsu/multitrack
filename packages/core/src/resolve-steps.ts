@@ -1,5 +1,6 @@
 import type { Step, StepConfig } from "./types.js";
 import { duplicateStepName, emptyConfig } from "./errors.js";
+import { validateStepConfigs } from "./warnings.js";
 
 /**
  * Resolve declarative step configs into absolute timeline positions.
@@ -14,6 +15,9 @@ export function resolveSteps(config: StepConfig[]): Step[] {
   if (config.length === 0) {
     throw emptyConfig();
   }
+
+  // Dev-mode warnings for common mistakes (tree-shaken in production)
+  validateStepConfigs(config);
 
   // Filter by condition predicates
   const filtered = config.filter((step) => {

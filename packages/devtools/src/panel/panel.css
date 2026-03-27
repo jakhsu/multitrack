@@ -1,0 +1,250 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-size: 12px;
+  color: #e1e1e1;
+  background: #1e1e1e;
+  line-height: 1.4;
+}
+
+#app {
+  padding: 12px;
+}
+
+#header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+#header h1 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.status {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.status.disconnected {
+  color: #999;
+  background: #333;
+}
+
+.status.connected {
+  color: #4ade80;
+  background: #14532d;
+}
+
+/* Progress bar */
+#progress-bar {
+  height: 3px;
+  background: #333;
+  border-radius: 2px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+#progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #3b82f6;
+  transition: width 0.05s linear;
+}
+
+/* Stats row */
+#stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+  color: #999;
+  font-family: ui-monospace, "SF Mono", monospace;
+  font-size: 11px;
+}
+
+/* Timeline visualization */
+#timeline {
+  margin-bottom: 16px;
+}
+
+.track {
+  margin-bottom: 8px;
+}
+
+.track-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #ccc;
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.track-label .meta {
+  font-weight: 400;
+  color: #666;
+}
+
+.track-bar {
+  position: relative;
+  height: 24px;
+  background: #2a2a2a;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.step-block {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-family: ui-monospace, "SF Mono", monospace;
+  color: #1e1e1e;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-right: 1px solid #1e1e1e;
+  cursor: default;
+  transition: opacity 0.1s;
+}
+
+.step-block.inactive {
+  opacity: 0.3;
+}
+
+.step-block.active {
+  opacity: 1;
+}
+
+/* Playhead */
+.playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #ef4444;
+  z-index: 10;
+  pointer-events: none;
+  transition: left 0.05s linear;
+}
+
+/* Tooltip */
+.tooltip {
+  position: fixed;
+  background: #fff;
+  color: #1e1e1e;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: ui-monospace, "SF Mono", monospace;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.tooltip.visible {
+  opacity: 1;
+}
+
+/* Active steps table */
+#steps-table {
+  margin-bottom: 16px;
+}
+
+#steps-table h2,
+#event-log h2 {
+  font-size: 12px;
+  font-weight: 600;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  font-size: 10px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  padding: 4px 8px;
+  border-bottom: 1px solid #333;
+}
+
+td {
+  font-family: ui-monospace, "SF Mono", monospace;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+td.opacity-cell {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Event log */
+#event-log {
+  max-height: 200px;
+  overflow: hidden;
+}
+
+#log-entries {
+  max-height: 170px;
+  overflow-y: auto;
+  font-family: ui-monospace, "SF Mono", monospace;
+  font-size: 11px;
+}
+
+.log-entry {
+  padding: 2px 0;
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.log-entry .log-time {
+  color: #666;
+  flex-shrink: 0;
+}
+
+.log-entry .log-type {
+  flex-shrink: 0;
+  font-weight: 600;
+}
+
+.log-entry .log-type.enter {
+  color: #4ade80;
+}
+
+.log-entry .log-type.exit {
+  color: #f87171;
+}
+
+.log-entry .log-name {
+  color: #e1e1e1;
+}
+
+.log-entry .log-track {
+  color: #666;
+}

@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="panel.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div id="header">
+        <h1>Multitrack Timeline</h1>
+        <span id="status" class="status disconnected">waiting for timeline…</span>
+      </div>
+      <div id="progress-bar">
+        <div id="progress-fill"></div>
+      </div>
+      <div id="stats">
+        <span id="stat-step">step: —</span>
+        <span id="stat-scroll">scroll: —</span>
+        <span id="stat-tracks">tracks: —</span>
+      </div>
+      <div id="timeline"></div>
+      <div id="steps-table">
+        <h2>Active Steps</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Track</th>
+              <th>Range</th>
+              <th>Opacity</th>
+            </tr>
+          </thead>
+          <tbody id="active-steps-body"></tbody>
+        </table>
+      </div>
+      <div id="event-log">
+        <h2>Event Log</h2>
+        <div id="log-entries"></div>
+      </div>
+    </div>
+    <script src="panel.js"></script>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "@multitrack/devtools",
+  "version": "0.1.0",
+  "description": "Chrome DevTools extension for @multitrack timeline inspection",
+  "private": true,
+  "scripts": {
+    "build": "vite build"
+  }
+}

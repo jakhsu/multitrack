@@ -44,15 +44,22 @@ export class Timeline {
   private emitter = new Emitter();
   private activeSteps = new Set<string>();
   private devtoolsEnabled: boolean;
+  private scrollUnsubscribe: (() => void) | null = null;
 
   constructor(options: TimelineOptions) {
     this.steps = resolveSteps(options.config);
     this.totalSteps = getTotalSteps(this.steps);
     this.scrollDriver = new ScrollDriver();
     this.devtoolsEnabled = options.devtools ?? false;
+  }
+
+  /** Start listening to scroll events. */
+  start(): void {
+    // Clean up any prior subscription (safe for repeated start/destroy cycles)
+    this.scrollUnsubscribe?.();
 
     // Wire scroll driver to event emission
-    this.scrollDriver.onScroll((scrollPercentage) => {
+    this.scrollUnsubscribe = this.scrollDriver.onScroll((scrollPercentage) => {
       const currentStep = scrollPercentage * this.totalSteps;
 
       // Emit scroll event
@@ -97,10 +104,7 @@ export class Timeline {
         this.updateDevtools(scrollPercentage, currentStep);
       }
     });
-  }
 
-  /** Start listening to scroll events. */
-  start(): void {
     // Set initial devtools state before any scroll
     if (this.devtoolsEnabled && typeof window !== "undefined") {
       this.updateDevtools(0, 0);
@@ -110,6 +114,8 @@ export class Timeline {
 
   /** Stop listening and clean up all resources. */
   destroy(): void {
+    this.scrollUnsubscribe?.();
+    this.scrollUnsubscribe = null;
     this.scrollDriver.destroy();
     this.emitter.removeAllListeners();
     this.activeSteps.clear();

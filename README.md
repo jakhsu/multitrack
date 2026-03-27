@@ -195,5 +195,8 @@ packages/
       content-script.ts Page ↔ extension bridge
       background.ts   Service worker message relay
 examples/
-  basic/            Demo app consuming the SDK
+  react/            React example (@multitrack/react bindings)
+  vue/              Vue 3 example (Composition API + @multitrack/core)
+  svelte/           Svelte 5 example (runes + @multitrack/core)
+  vanilla/          Vanilla TS example (pure @multitrack/core)
 ```

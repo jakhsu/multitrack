@@ -13,6 +13,8 @@ export interface MultitrackProviderProps {
   config: StepConfig[];
   /** Enable devtools integration. */
   devtools?: boolean;
+  /** Named breakpoints for responsive step inclusion. */
+  breakpoints?: Record<string, string>;
   children: ReactNode;
 }
 
@@ -23,6 +25,7 @@ export interface MultitrackProviderProps {
 export function MultitrackProvider({
   config,
   devtools = false,
+  breakpoints,
   children,
 }: MultitrackProviderProps) {
   const timelineRef = useRef<Timeline | null>(null);
@@ -30,10 +33,10 @@ export function MultitrackProvider({
   // Create timeline instance (stable across renders unless config changes)
   const timeline = useMemo(() => {
     timelineRef.current?.destroy();
-    const t = new Timeline({ config, devtools });
+    const t = new Timeline({ config, devtools, breakpoints });
     timelineRef.current = t;
     return t;
-  }, [config, devtools]);
+  }, [config, devtools, breakpoints]);
 
   const [state, setState] = useState({
     scrollPercentage: 0,
@@ -42,18 +45,29 @@ export function MultitrackProvider({
   });
 
   useEffect(() => {
-    const unsubscribe = timeline.on("scroll", ({ scrollPercentage, currentStep }) => {
-      setState({
-        scrollPercentage,
-        currentStep,
-        opacities: timeline.getOpacities(scrollPercentage),
+    const ctx = timeline.scope(() => {
+      timeline.on("scroll", ({ scrollPercentage, currentStep }) => {
+        setState({
+          scrollPercentage,
+          currentStep,
+          opacities: timeline.getOpacities(scrollPercentage),
+        });
+      });
+
+      // Re-render when breakpoints change and steps are reconfigured
+      timeline.on("timeline:reconfigure", () => {
+        setState({
+          scrollPercentage: timeline.scrollPercentage,
+          currentStep: timeline.currentStep,
+          opacities: timeline.getOpacities(),
+        });
       });
     });
 
     timeline.start();
 
     return () => {
-      unsubscribe();
+      ctx.dispose();
       timeline.destroy();
     };
   }, [timeline]);

@@ -32,6 +32,8 @@ export interface StepConfig {
   easing?: EasingPreset | EasingFunction;
   /** Optional predicate — if provided, step is only included when this returns true. */
   condition?: () => boolean;
+  /** Named breakpoint this step belongs to. Only included when that breakpoint matches. */
+  when?: string;
 }
 
 // --- Resolved Step (internal, computed from StepConfig) ---
@@ -70,10 +72,16 @@ export interface ScrollEventPayload {
   currentStep: number;
 }
 
+export interface ReconfigureEventPayload {
+  steps: Step[];
+  totalSteps: number;
+}
+
 export interface TimelineEventMap {
   "step:enter": StepEventPayload;
   "step:exit": StepEventPayload;
   scroll: ScrollEventPayload;
+  "timeline:reconfigure": ReconfigureEventPayload;
 }
 
 export type TimelineEventType = keyof TimelineEventMap;
@@ -95,6 +103,8 @@ export interface TimelineOptions<T extends string = string> {
   config: StepConfig[];
   /** Enable devtools integration (exposes state on window.__MULTITRACK_DEVTOOLS__) */
   devtools?: boolean;
+  /** Named breakpoints mapping to CSS media queries for responsive step inclusion. */
+  breakpoints?: Record<string, string>;
 }
 
 // --- Devtools ---

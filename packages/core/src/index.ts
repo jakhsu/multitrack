@@ -26,6 +26,12 @@ export { resetWarnings } from "./warnings.js";
 // Emitter
 export { Emitter } from "./emitter.js";
 
+// Scope
+export { Scope } from "./scope.js";
+
+// Middleware
+export type { MiddlewareEvent, MiddlewareFn } from "./middleware.js";
+
 // Types
 export type {
   StepConfig,
@@ -38,6 +44,7 @@ export type {
   TimelineEventHandler,
   StepEventPayload,
   ScrollEventPayload,
+  ReconfigureEventPayload,
   ScrollDriverOptions,
   TimelineOptions,
   DevtoolsState,

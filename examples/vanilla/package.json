@@ -9,7 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@multitrack/core": "workspace:*"
+    "@multitrack/core": "workspace:*",
+    "maplibre-gl": "^4.7.1"
   },
   "devDependencies": {
     "typescript": "~5.9.3",

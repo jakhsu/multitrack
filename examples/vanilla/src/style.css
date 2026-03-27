@@ -8,25 +8,52 @@ html,
 body {
   width: 100%;
   overflow-x: hidden;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #0a0a0a;
+  color: #fff;
 }
 
 #fixed-stage {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
   touch-action: pan-y;
 }
 
-#background {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(0deg, #0f172a, #1e293b, #334155);
-  transition: background 0.1s;
+#scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
-/* Sections */
-.section {
+#map-container {
+  width: 100%;
+  height: 100%;
+  filter: invert(1) hue-rotate(180deg);
+}
+
+#vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 30%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Title                                                              */
+/* ------------------------------------------------------------------ */
+
+.title-section {
   position: absolute;
   inset: 0;
   display: flex;
@@ -34,112 +61,185 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 10;
-  color: white;
+  text-align: center;
+  padding: 0 24px;
 }
 
-.section h1 {
-  font-size: 48px;
-  font-weight: 700;
-  letter-spacing: -1px;
-}
-
-.section h2 {
-  font-size: 28px;
-  font-weight: 600;
-}
-
-.subtitle {
-  font-size: 18px;
-  color: rgba(255, 255, 255, 0.6);
-  margin-top: 12px;
-}
-
-.hint {
-  margin-top: 48px;
-  color: rgba(255, 255, 255, 0.3);
-  font-size: 14px;
-}
-
-/* Feature cards */
-.card {
-  max-width: 480px;
-  padding: 40px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
-  border: 1px solid;
-}
-
-.card h2 {
-  font-size: 28px;
-  font-weight: 600;
-  color: white;
-  margin: 0;
-}
-
-.card p {
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.6);
-  margin-top: 12px;
-  line-height: 1.6;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+.title-kicker {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
   margin-bottom: 16px;
 }
 
-/* Captions */
-.caption {
+.title-heading {
+  font-size: clamp(36px, 7vw, 80px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.title-sub {
+  font-size: 17px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.45);
+  margin-top: 16px;
+}
+
+.scroll-hint {
+  margin-top: 72px;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.2);
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Text panel                                                         */
+/* ------------------------------------------------------------------ */
+
+.text-panel {
   position: absolute;
-  bottom: 80px;
+  top: 50%;
+  max-width: 400px;
+  padding: 32px 36px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  z-index: 10;
+  display: none;
+}
+
+.text-panel--left {
+  left: clamp(24px, 5vw, 80px);
+}
+
+.text-panel--right {
+  right: clamp(24px, 5vw, 80px);
+}
+
+.text-panel__label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 14px;
+}
+
+.text-panel__title {
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.text-panel__body {
+  font-size: 15px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.55);
+  margin-top: 16px;
+  line-height: 1.75;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Outro                                                              */
+/* ------------------------------------------------------------------ */
+
+.outro-section {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  text-align: center;
+  padding: 0 24px;
+  display: none;
+}
+
+.outro-heading {
+  font-size: clamp(28px, 4.5vw, 52px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+}
+
+.outro-sub {
+  font-size: 15px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 16px;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Location dots                                                      */
+/* ------------------------------------------------------------------ */
+
+.location-dots {
+  position: absolute;
+  bottom: 28px;
   left: 50%;
   transform: translateX(-50%);
-  padding: 12px 24px;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(10px);
-  border-radius: 8px;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 14px;
-  font-family: monospace;
-  white-space: nowrap;
+  display: none;
+  gap: 10px;
   z-index: 20;
 }
 
-/* Highlight ring */
-#highlight {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 200px;
-  height: 200px;
-  border: 2px solid rgba(139, 92, 246, 0.3);
+.location-dot {
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  z-index: 5;
-  pointer-events: none;
+  background: rgba(255, 255, 255, 0.2);
+  transition: background 0.4s ease;
 }
 
-/* Debug info */
-#debug {
+/* ------------------------------------------------------------------ */
+/*  Progress bar                                                       */
+/* ------------------------------------------------------------------ */
+
+.progress-bar {
   position: absolute;
-  bottom: 16px;
-  left: 16px;
-  font-family: monospace;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.5);
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: rgba(255, 255, 255, 0.3);
   z-index: 50;
+  transition: width 0.1s linear;
 }
 
-#active-steps {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  font-family: monospace;
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.4);
-  text-align: right;
-  z-index: 50;
-  white-space: pre;
+/* ------------------------------------------------------------------ */
+/*  Keyframes                                                          */
+/* ------------------------------------------------------------------ */
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Responsive                                                         */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 640px) {
+  .text-panel {
+    max-width: calc(100% - 32px);
+    left: 16px !important;
+    right: 16px !important;
+    padding: 24px 28px;
+  }
+
+  .text-panel__body {
+    font-size: 14px;
+    line-height: 1.65;
+  }
 }

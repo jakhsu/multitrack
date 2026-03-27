@@ -1,63 +1,121 @@
 import { Timeline } from "@multitrack/core";
-import { config } from "./config.ts";
+import maplibregl from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
+import { config, views, MAP_STEPS, LOCATIONS } from "./config.ts";
 import "./style.css";
 
 const timeline = new Timeline({ config, devtools: true });
 
-// Cache DOM elements
-const scrollContainer = document.getElementById("scroll-container")!;
-const background = document.getElementById("background")!;
-const intro = document.getElementById("intro")!;
-const feature1 = document.getElementById("feature-1")!;
-const feature2 = document.getElementById("feature-2")!;
-const caption1 = document.getElementById("caption-1")!;
-const caption2 = document.getElementById("caption-2")!;
-const caption3 = document.getElementById("caption-3")!;
-const highlight = document.getElementById("highlight")!;
-const outro = document.getElementById("outro")!;
-const debug = document.getElementById("debug")!;
-const activeSteps = document.getElementById("active-steps")!;
+/* ------------------------------------------------------------------ */
+/*  Cache DOM elements                                                 */
+/* ------------------------------------------------------------------ */
 
-// Set scroll height
+const scrollContainer = document.getElementById("scroll-container")!;
+const title = document.getElementById("title")!;
+const textTokyo = document.getElementById("text-tokyo")!;
+const textAlps = document.getElementById("text-alps")!;
+const textSahara = document.getElementById("text-sahara")!;
+const textNyc = document.getElementById("text-nyc")!;
+const textAmazon = document.getElementById("text-amazon")!;
+const outro = document.getElementById("outro")!;
+const locationDots = document.getElementById("location-dots")!;
+const dots = locationDots.querySelectorAll<HTMLDivElement>(".location-dot");
+const progressBar = document.getElementById("progress-bar")!;
+
+const textPanels: Record<string, HTMLElement> = {
+  "text-tokyo": textTokyo,
+  "text-alps": textAlps,
+  "text-sahara": textSahara,
+  "text-nyc": textNyc,
+  "text-amazon": textAmazon,
+};
+
+/* ------------------------------------------------------------------ */
+/*  Set scroll height                                                  */
+/* ------------------------------------------------------------------ */
+
 scrollContainer.style.height = `${timeline.totalSteps * 100}vh`;
 
-// Subscribe to scroll events
-timeline.on("scroll", ({ scrollPercentage, currentStep }) => {
+/* ------------------------------------------------------------------ */
+/*  Initialise MapLibre                                                */
+/* ------------------------------------------------------------------ */
+
+const map = new maplibregl.Map({
+  container: "map-container",
+  style: "https://tiles.openfreemap.org/styles/positron",
+  center: views.globe.center,
+  zoom: views.globe.zoom,
+  pitch: views.globe.pitch,
+  bearing: views.globe.bearing,
+  interactive: false,
+  attributionControl: false,
+});
+
+let currentView = "globe";
+
+/* ------------------------------------------------------------------ */
+/*  Scroll handler                                                     */
+/* ------------------------------------------------------------------ */
+
+timeline.on("scroll", ({ scrollPercentage }) => {
   const opacities = timeline.getOpacities(scrollPercentage);
 
-  // Update background gradient
-  background.style.background = `linear-gradient(${scrollPercentage * 360}deg, #0f172a, #1e293b, #334155)`;
+  // --- Map flyTo ---
+  const active = MAP_STEPS.find((name) => (opacities[name] ?? 0) > 0);
+  if (active && active !== currentView) {
+    currentView = active;
+    const view = views[active];
+    map.flyTo({
+      center: view.center,
+      zoom: view.zoom,
+      pitch: view.pitch,
+      bearing: view.bearing,
+      duration: 4000,
+      essential: true,
+    });
+  }
 
-  // Update sections
-  updateSection(intro, opacities["intro"] ?? 0);
-  updateSection(feature1, opacities["feature-1"] ?? 0);
-  updateSection(feature2, opacities["feature-2"] ?? 0);
-  updateSection(caption1, opacities["caption-1"] ?? 0);
-  updateSection(caption2, opacities["caption-2"] ?? 0);
-  updateSection(caption3, opacities["caption-3"] ?? 0);
+  // --- Title ---
+  updateSection(title, opacities["title"] ?? 0);
+
+  // --- Text panels ---
+  for (const [name, el] of Object.entries(textPanels)) {
+    updatePanel(el, opacities[name] ?? 0);
+  }
+
+  // --- Outro ---
   updateSection(outro, opacities["outro"] ?? 0);
 
-  // Update highlight ring
-  const highlightOpacity = opacities["highlight"] ?? 0;
-  highlight.style.opacity = String(highlightOpacity * 0.5);
-  highlight.style.transform = `translate(-50%, -50%) scale(${0.8 + highlightOpacity * 0.4})`;
-  highlight.style.display = highlightOpacity > 0 ? "" : "none";
+  // --- Location dots ---
+  const activeLocIdx = LOCATIONS.findIndex(
+    (name) => (opacities[`text-${name}`] ?? 0) > 0,
+  );
+  locationDots.style.display = activeLocIdx >= 0 ? "" : "none";
+  dots.forEach((dot, i) => {
+    dot.style.background =
+      i === activeLocIdx
+        ? "rgba(255,255,255,0.8)"
+        : "rgba(255,255,255,0.2)";
+  });
 
-  // Update debug info
-  debug.textContent = `step ${currentStep.toFixed(1)} / ${timeline.totalSteps} \u00b7 ${(scrollPercentage * 100).toFixed(0)}%`;
-
-  // Update active steps indicator
-  const active = Object.entries(opacities)
-    .filter(([, v]) => v > 0)
-    .map(([name, value]) => `${name}: ${value.toFixed(2)}`)
-    .join("\n");
-  activeSteps.textContent = active;
+  // --- Progress bar ---
+  progressBar.style.width = `${scrollPercentage * 100}%`;
 });
 
 timeline.start();
 
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+
 function updateSection(el: HTMLElement, opacity: number) {
   el.style.opacity = String(opacity);
-  el.style.transform = `translateY(${(1 - opacity) * 30}px)`;
+  el.style.transform = `translateY(${(1 - opacity) * 20}px)`;
+  el.style.display = opacity > 0 ? "" : "none";
+}
+
+function updatePanel(el: HTMLElement, opacity: number) {
+  el.style.opacity = String(opacity);
+  el.style.transform = `translateY(calc(-50% + ${(1 - opacity) * 30}px))`;
   el.style.display = opacity > 0 ? "" : "none";
 }

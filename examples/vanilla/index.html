@@ -8,51 +8,70 @@
   <body>
     <div id="scroll-container">
       <div id="fixed-stage">
-        <div id="background"></div>
+        <div id="scene">
+          <!-- Map -->
+          <div id="map-container"></div>
 
-        <!-- Intro -->
-        <div id="intro" class="section">
-          <h1>@multitrack</h1>
-          <p class="subtitle">Scroll-driven animation engine</p>
-          <div class="hint">&darr; scroll to explore</div>
-        </div>
+          <!-- Vignette -->
+          <div id="vignette"></div>
 
-        <!-- Feature cards -->
-        <div id="feature-1" class="section">
-          <div class="card" style="border-color: rgba(59, 130, 246, 0.25)">
-            <div class="dot" style="background: #3b82f6"></div>
-            <h2>Multi-Track Timeline</h2>
-            <p>Like a video editor: independent tracks for content, text, and effects &mdash; all driven by scroll position.</p>
+          <!-- Title -->
+          <div id="title" class="title-section">
+            <p class="title-kicker">@multitrack presents</p>
+            <h1 class="title-heading">Earth in Motion</h1>
+            <p class="title-sub">A scroll-driven journey across the planet</p>
+            <div class="scroll-hint">&darr; scroll to explore</div>
           </div>
-        </div>
 
-        <div id="feature-2" class="section">
-          <div class="card" style="border-color: rgba(139, 92, 246, 0.25)">
-            <div class="dot" style="background: #8b5cf6"></div>
-            <h2>Config-Driven API</h2>
-            <p>Define animations declaratively. No imperative code, no requestAnimationFrame loops.</p>
+          <!-- Text panels -->
+          <div id="text-tokyo" class="text-panel text-panel--left">
+            <p class="text-panel__label">URBAN DENSITY</p>
+            <h2 class="text-panel__title">Tokyo</h2>
+            <p class="text-panel__body">37 million people inhabit the greater Tokyo area, making it the most populous metropolitan region on Earth. The city&rsquo;s rail network moves 40 million passengers daily&thinsp;&mdash;&thinsp;more than many countries&rsquo; entire population.</p>
           </div>
+
+          <div id="text-alps" class="text-panel text-panel--right">
+            <p class="text-panel__label">ELEVATION</p>
+            <h2 class="text-panel__title">The Alps</h2>
+            <p class="text-panel__body">Stretching 1,200 kilometers across eight countries, the Alps are home to over 4,000 peaks above 2,000 meters. Glaciers here hold 40% of Europe&rsquo;s fresh water&thinsp;&mdash;&thinsp;though they&rsquo;ve lost half their volume since 1900.</p>
+          </div>
+
+          <div id="text-sahara" class="text-panel text-panel--left">
+            <p class="text-panel__label">EXPANSE</p>
+            <h2 class="text-panel__title">Sahara Desert</h2>
+            <p class="text-panel__body">At 9.2 million square kilometers, the Sahara is roughly the size of the United States. Beneath its surface lies the world&rsquo;s largest underground aquifer system&thinsp;&mdash;&thinsp;ancient water sealed away for thousands of years.</p>
+          </div>
+
+          <div id="text-nyc" class="text-panel text-panel--right">
+            <p class="text-panel__label">THE GRID</p>
+            <h2 class="text-panel__title">New York City</h2>
+            <p class="text-panel__body">Manhattan&rsquo;s 1811 grid plan laid out 12 avenues and 155 cross-streets on what was then farmland and forest. Two centuries later, 1.6 million people live on this 23-square-mile island.</p>
+          </div>
+
+          <div id="text-amazon" class="text-panel text-panel--left">
+            <p class="text-panel__label">BIODIVERSITY</p>
+            <h2 class="text-panel__title">Amazon Basin</h2>
+            <p class="text-panel__body">The Amazon rainforest produces 20% of the world&rsquo;s oxygen and contains 10% of all species on Earth. Its river system carries one-fifth of all fresh water that flows into the world&rsquo;s oceans.</p>
+          </div>
+
+          <!-- Outro -->
+          <div id="outro" class="outro-section">
+            <h2 class="outro-heading">The world keeps moving.</h2>
+            <p class="outro-sub">Built with @multitrack &mdash; scroll-driven animation engine</p>
+          </div>
+
+          <!-- Location dots -->
+          <div id="location-dots" class="location-dots">
+            <div class="location-dot"></div>
+            <div class="location-dot"></div>
+            <div class="location-dot"></div>
+            <div class="location-dot"></div>
+            <div class="location-dot"></div>
+          </div>
+
+          <!-- Progress bar -->
+          <div id="progress-bar" class="progress-bar"></div>
         </div>
-
-        <!-- Captions -->
-        <div id="caption-1" class="caption">Each track maintains its own independent cursor.</div>
-        <div id="caption-2" class="caption">Steps on different tracks can overlap freely.</div>
-        <div id="caption-3" class="caption">The opacity engine handles everything.</div>
-
-        <!-- Highlight ring -->
-        <div id="highlight"></div>
-
-        <!-- Outro -->
-        <div id="outro" class="section">
-          <h2>That's it.</h2>
-          <p class="subtitle">Config-driven. Framework-agnostic core. Devtools included.</p>
-        </div>
-
-        <!-- Debug info -->
-        <div id="debug"></div>
-
-        <!-- Active steps -->
-        <div id="active-steps"></div>
       </div>
     </div>
     <script type="module" src="/src/main.ts"></script>

@@ -9,6 +9,7 @@
     "dev:react": "pnpm --filter @multitrack/example-react dev",
     "dev:vue": "pnpm --filter @multitrack/example-vue dev",
     "dev:svelte": "pnpm --filter @multitrack/example-svelte dev",
+    "dev:react-gsap": "pnpm --filter @multitrack/example-react-gsap dev",
     "dev:vanilla": "pnpm --filter @multitrack/example-vanilla dev",
     "dev:all": "pnpm --filter './examples/*' --parallel dev",
     "lint": "oxlint",

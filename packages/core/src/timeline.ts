@@ -10,7 +10,6 @@ import type {
 import { resolveSteps, getTotalSteps } from "./resolve-steps.js";
 import {
   calculateAllOpacities,
-  calculateStepOpacity,
   getStepRange,
   getCurrentSteps,
 } from "./opacity.js";

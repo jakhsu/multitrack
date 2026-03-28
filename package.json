@@ -11,8 +11,13 @@
     "dev:svelte": "pnpm --filter @multitrack/example-svelte dev",
     "dev:vanilla": "pnpm --filter @multitrack/example-vanilla dev",
     "dev:all": "pnpm --filter './examples/*' --parallel dev",
+    "lint": "oxlint",
     "changeset": "changeset",
-    "version": "changeset version"
+    "version": "changeset version",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,vue,svelte}": "oxlint"
   },
   "devDependencies": {
     "@anthropic-ai/claude-code": "^2.1.85",
@@ -21,6 +26,9 @@
     "@types/chrome": "^0.1.38",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "oxlint": "^1.57.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "tsup": "^8.5.1",

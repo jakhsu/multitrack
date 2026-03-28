@@ -30,8 +30,7 @@
 
 A scroll-driven animation engine with a multi-track timeline architecture, inspired by video editing software.
 
-<!-- TODO: Replace with actual recording — see docs/assets/ -->
-<!-- ![hero demo](docs/assets/hero-demo.gif) -->
+![hero demo](docs/assets/hero-demo.gif)
 
 ## Why @multitrack?
 
@@ -133,8 +132,7 @@ Need fine-grained control? Use the [`useStep()` hook](packages/react#usestepname
 
 ## DevTools
 
-<!-- TODO: Replace with actual recording — see docs/assets/ -->
-<!-- ![devtools panel](docs/assets/devtools-panel.gif) -->
+![devtools panel](docs/assets/devtools-panel.gif)
 
 A Chrome DevTools extension that gives you a live timeline inspector: color-coded track visualization, red playhead following scroll, active steps table with live opacity values, and a step:enter / step:exit event log.
 

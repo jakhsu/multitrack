@@ -7,6 +7,7 @@
 [![tree-shaking](https://badgen.net/bundlephobia/tree-shaking/@multitrack/core)](https://bundlephobia.com/package/@multitrack/core)
 [![CI](https://github.com/jakhsu/multitrack/actions/workflows/ci.yml/badge.svg)](https://github.com/jakhsu/multitrack/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/jakhsu/multitrack)
 
 A scroll-driven animation engine with a multi-track timeline architecture, inspired by video editing software.
 

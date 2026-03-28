@@ -1,4 +1,4 @@
-import type { EasingFunction, EasingPreset, Opacities, Step } from "./types.js";
+import type { Opacities, Step } from "./types.js";
 import { resolveEasing } from "./easings.js";
 import { stepNotFound } from "./errors.js";
 

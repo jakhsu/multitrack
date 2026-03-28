@@ -99,6 +99,7 @@ export interface ScrollDriverOptions {
 
 // --- Timeline ---
 
+// oxlint-disable-next-line no-unused-vars -- generic reserved for future type-safe step names
 export interface TimelineOptions<T extends string = string> {
   config: StepConfig[];
   /** Enable devtools integration (exposes state on window.__MULTITRACK_DEVTOOLS__) */

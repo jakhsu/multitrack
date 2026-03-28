@@ -133,6 +133,7 @@
   /*  Map                                                              */
   /* ---------------------------------------------------------------- */
 
+  // oxlint-disable-next-line no-unassigned-vars -- assigned via Svelte bind:this
   let mapContainer: HTMLDivElement;
   let map: maplibregl.Map | null = null;
   let currentView = "globe";

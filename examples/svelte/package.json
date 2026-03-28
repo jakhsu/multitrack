@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@multitrack/core": "workspace:*",
-    "maplibre-gl": "^4.7.1"
+    "maplibre-gl": "^5.21.1"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^7.0.0",

@@ -4,7 +4,20 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { config, views, MAP_STEPS, LOCATIONS } from "./config.ts";
 import "./style.css";
 
-const timeline = new Timeline({ config, devtools: true });
+const timeline = new Timeline({
+  config,
+  breakpoints: {
+    mobile: "(max-width: 768px)",
+    desktop: "(min-width: 769px)",
+  },
+  devtools: true,
+});
+
+/* SDK Feature Demo: lifecycle middleware */
+timeline.use((event, next) => {
+  console.log(`[middleware] ${event.type}: ${event.payload.name}`);
+  next();
+});
 
 /* ------------------------------------------------------------------ */
 /*  Cache DOM elements                                                 */
@@ -100,6 +113,11 @@ timeline.on("scroll", ({ scrollPercentage }) => {
 
   // --- Progress bar ---
   progressBar.style.width = `${scrollPercentage * 100}%`;
+});
+
+/* Update scroll height when responsive tracks reconfigure */
+timeline.on("timeline:reconfigure", () => {
+  scrollContainer.style.height = `${timeline.totalSteps * 100}vh`;
 });
 
 timeline.start();

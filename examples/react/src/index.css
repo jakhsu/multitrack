@@ -225,6 +225,45 @@ body {
 /*  Responsive                                                         */
 /* ------------------------------------------------------------------ */
 
+/* ------------------------------------------------------------------ */
+/*  Middleware log panel                                                */
+/* ------------------------------------------------------------------ */
+
+.middleware-log {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  z-index: 100;
+  max-width: 260px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.middleware-log__title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 6px;
+}
+
+.middleware-log__entry {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.middleware-log__type {
+  color: #6ee7b7;
+}
+
 @media (max-width: 640px) {
   .text-panel {
     max-width: calc(100% - 32px);

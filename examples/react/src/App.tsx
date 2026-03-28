@@ -1,16 +1,29 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+import { resolveSteps } from "@multitrack/core";
 import type { StepConfig } from "@multitrack/react";
 import {
   MultitrackProvider,
   ScrollContainer,
   FixedStage,
   Show,
+  useTimeline,
   useStep,
   useOpacities,
   useScrollProgress,
 } from "@multitrack/react";
+
+/* ------------------------------------------------------------------ */
+/*  SDK Feature Demo: dev-mode warnings                                */
+/*  Open DevTools console to see these fire on page load.              */
+/* ------------------------------------------------------------------ */
+
+resolveSteps([
+  { name: "oops", duration: 0, track: "main" },       // ZERO_DURATION
+  { name: "too-long", duration: 8, track: "main" },   // SNAP_LONG_STEP
+  { name: "typo", duration: 3, track: "mian" },       // LONE_TRACK
+]);
 
 /* ------------------------------------------------------------------ */
 /*  Custom easings                                                     */
@@ -87,29 +100,36 @@ const content: Record<
 
 const config: StepConfig[] = [
   // ── Map track: camera positions ──
+  //    Alps and NYC are desktop-only (responsive tracks demo)
   { name: "globe", duration: 4, track: "map" },
   { name: "tokyo", duration: 5, track: "map" },
-  { name: "alps", duration: 5, track: "map" },
+  { name: "alps", duration: 5, track: "map", when: "desktop" },
   { name: "sahara", duration: 5, track: "map" },
-  { name: "nyc", duration: 5, track: "map" },
+  { name: "nyc", duration: 5, track: "map", when: "desktop" },
   { name: "amazon", duration: 5, track: "map" },
   { name: "globe-out", duration: 4, track: "map" },
 
   // ── Text track: narrative overlays ──
+  //    Matching text steps are also desktop-only
   { name: "title", duration: 4, track: "text", easing: fadeOut },
   { name: "buffer", duration: 1, track: "text" },
   { name: "text-tokyo", duration: 4, track: "text", easing: fadeInOut },
   { name: "buffer", duration: 1, track: "text" },
-  { name: "text-alps", duration: 4, track: "text", easing: fadeInOut },
-  { name: "buffer", duration: 1, track: "text" },
+  { name: "text-alps", duration: 4, track: "text", easing: fadeInOut, when: "desktop" },
+  { name: "buffer", duration: 1, track: "text", when: "desktop" },
   { name: "text-sahara", duration: 4, track: "text", easing: fadeInOut },
   { name: "buffer", duration: 1, track: "text" },
-  { name: "text-nyc", duration: 4, track: "text", easing: fadeInOut },
-  { name: "buffer", duration: 1, track: "text" },
+  { name: "text-nyc", duration: 4, track: "text", easing: fadeInOut, when: "desktop" },
+  { name: "buffer", duration: 1, track: "text", when: "desktop" },
   { name: "text-amazon", duration: 4, track: "text", easing: fadeInOut },
   { name: "buffer", duration: 1, track: "text" },
   { name: "outro", duration: 3, track: "text", easing: fadeIn },
 ];
+
+const breakpoints = {
+  mobile: "(max-width: 768px)",
+  desktop: "(min-width: 769px)",
+};
 
 /* ------------------------------------------------------------------ */
 /*  App                                                                */
@@ -117,10 +137,11 @@ const config: StepConfig[] = [
 
 export default function App() {
   return (
-    <MultitrackProvider config={config} devtools>
+    <MultitrackProvider config={config} breakpoints={breakpoints} devtools>
       <ScrollContainer>
         <FixedStage>
           <Scene />
+          <MiddlewareLog />
         </FixedStage>
       </ScrollContainer>
     </MultitrackProvider>
@@ -313,7 +334,13 @@ function OutroSection() {
 
 function LocationDots() {
   const opacities = useOpacities();
-  const activeIndex = LOCATIONS.findIndex(
+
+  // Filter to locations that exist in the current timeline
+  // (responsive tracks may exclude some on mobile)
+  const visibleLocations = LOCATIONS.filter(
+    (name) => `text-${name}` in opacities,
+  );
+  const activeIndex = visibleLocations.findIndex(
     (name) => (opacities[`text-${name}`] ?? 0) > 0,
   );
 
@@ -321,7 +348,7 @@ function LocationDots() {
 
   return (
     <div className="location-dots">
-      {LOCATIONS.map((_, i) => (
+      {visibleLocations.map((_, i) => (
         <div
           key={i}
           className="location-dot"
@@ -332,6 +359,45 @@ function LocationDots() {
                 : "rgba(255,255,255,0.2)",
           }}
         />
+      ))}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  SDK Feature Demo: lifecycle middleware                              */
+/*  Shows step transitions in a floating panel.                        */
+/* ------------------------------------------------------------------ */
+
+function MiddlewareLog() {
+  const timeline = useTimeline();
+  const [events, setEvents] = useState<
+    Array<{ type: string; name: string }>
+  >([]);
+
+  useEffect(() => {
+    const unsub = timeline.use((event, next) => {
+      setEvents((prev) => [
+        ...prev.slice(-4),
+        { type: event.type, name: event.payload.name },
+      ]);
+      next();
+    });
+    return unsub;
+  }, [timeline]);
+
+  if (events.length === 0) return null;
+
+  return (
+    <div className="middleware-log">
+      <div className="middleware-log__title">Middleware Log</div>
+      {events.map((e, i) => (
+        <div key={i} className="middleware-log__entry">
+          <span className="middleware-log__type">
+            {e.type === "step:enter" ? "enter" : "exit "}
+          </span>{" "}
+          {e.name}
+        </div>
       ))}
     </div>
   );

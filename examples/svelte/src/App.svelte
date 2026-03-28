@@ -335,6 +335,9 @@
     z-index: 10;
     text-align: center;
     padding: 0 24px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
   }
 
   .title-kicker {

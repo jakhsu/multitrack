@@ -1,0 +1,60 @@
+{
+  "name": "@multitrack/vue",
+  "version": "0.1.0",
+  "description": "Vue 3 bindings for @multitrack/core",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "peerDependencies": {
+    "vue": ">=3.3.0"
+  },
+  "dependencies": {
+    "@multitrack/core": "workspace:^"
+  },
+  "sideEffects": false,
+  "license": "MIT",
+  "author": "Jack Hsu",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jakhsu/multitrack.git",
+    "directory": "packages/vue"
+  },
+  "homepage": "https://github.com/jakhsu/multitrack/tree/main/packages/vue",
+  "bugs": {
+    "url": "https://github.com/jakhsu/multitrack/issues"
+  },
+  "keywords": [
+    "scroll-animation",
+    "scroll-driven",
+    "timeline",
+    "vue",
+    "vue3",
+    "vue-composables",
+    "scrollytelling",
+    "multi-track"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

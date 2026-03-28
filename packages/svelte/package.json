@@ -1,0 +1,58 @@
+{
+  "name": "@multitrack/svelte",
+  "version": "0.1.0",
+  "description": "Svelte 5 bindings for @multitrack/core",
+  "type": "module",
+  "svelte": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "svelte": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "svelte-package -i src -o dist",
+    "dev": "svelte-package -i src -o dist --watch"
+  },
+  "peerDependencies": {
+    "svelte": ">=5.0.0"
+  },
+  "dependencies": {
+    "@multitrack/core": "workspace:^"
+  },
+  "devDependencies": {
+    "@sveltejs/package": "^2.0.0",
+    "svelte": "^5.46.4"
+  },
+  "sideEffects": false,
+  "license": "MIT",
+  "author": "Jack Hsu",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jakhsu/multitrack.git",
+    "directory": "packages/svelte"
+  },
+  "homepage": "https://github.com/jakhsu/multitrack/tree/main/packages/svelte",
+  "bugs": {
+    "url": "https://github.com/jakhsu/multitrack/issues"
+  },
+  "keywords": [
+    "scroll-animation",
+    "scroll-driven",
+    "timeline",
+    "svelte",
+    "svelte5",
+    "runes",
+    "scrollytelling",
+    "multi-track"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "name": "@multitrack/svelte",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Svelte 5 bindings for @multitrack/core",
   "type": "module",
   "svelte": "./dist/index.js",
@@ -12,7 +12,9 @@
       "default": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "svelte-package -i src -o dist",
     "dev": "svelte-package -i src -o dist --watch"

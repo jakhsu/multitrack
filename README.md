@@ -1,7 +1,10 @@
 # @multitrack
 
 [![npm @multitrack/core](https://img.shields.io/npm/v/@multitrack/core?label=%40multitrack%2Fcore)](https://www.npmjs.com/package/@multitrack/core)
+[![core minzip](https://badgen.net/bundlephobia/minzip/@multitrack/core)](https://bundlephobia.com/package/@multitrack/core)
 [![npm @multitrack/react](https://img.shields.io/npm/v/@multitrack/react?label=%40multitrack%2Freact)](https://www.npmjs.com/package/@multitrack/react)
+[![react minzip](https://badgen.net/bundlephobia/minzip/@multitrack/react)](https://bundlephobia.com/package/@multitrack/react)
+[![tree-shaking](https://badgen.net/bundlephobia/tree-shaking/@multitrack/core)](https://bundlephobia.com/package/@multitrack/core)
 [![CI](https://github.com/jakhsu/multitrack/actions/workflows/ci.yml/badge.svg)](https://github.com/jakhsu/multitrack/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 

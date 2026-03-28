@@ -23,5 +23,30 @@
     "build": "tsup",
     "dev": "tsup --watch"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "license": "MIT",
+  "author": "Jack Hsu",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jakhsu/multitrack.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/jakhsu/multitrack/tree/main/packages/core",
+  "bugs": {
+    "url": "https://github.com/jakhsu/multitrack/issues"
+  },
+  "keywords": [
+    "scroll-animation",
+    "scroll-driven",
+    "timeline",
+    "animation-engine",
+    "multi-track",
+    "scrollytelling"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18"
+  }
 }

@@ -24,6 +24,12 @@
     "vite": "^8.0.3",
     "vitest": "^4.1.2"
   },
+  "license": "MIT",
+  "author": "Jack Hsu",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jakhsu/multitrack.git"
+  },
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild"

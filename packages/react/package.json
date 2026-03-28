@@ -28,7 +28,33 @@
     "react-dom": ">=18.0.0"
   },
   "dependencies": {
-    "@multitrack/core": "workspace:*"
+    "@multitrack/core": "workspace:^"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "license": "MIT",
+  "author": "Jack Hsu",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jakhsu/multitrack.git",
+    "directory": "packages/react"
+  },
+  "homepage": "https://github.com/jakhsu/multitrack/tree/main/packages/react",
+  "bugs": {
+    "url": "https://github.com/jakhsu/multitrack/issues"
+  },
+  "keywords": [
+    "scroll-animation",
+    "scroll-driven",
+    "timeline",
+    "react",
+    "react-hooks",
+    "scrollytelling",
+    "multi-track"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18"
+  }
 }

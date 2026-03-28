@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@multitrack/core": "workspace:*",
+    "@multitrack/svelte": "workspace:*",
     "maplibre-gl": "^4.7.1"
   },
   "devDependencies": {

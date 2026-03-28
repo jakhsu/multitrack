@@ -77,9 +77,9 @@ const config: StepConfig[] = [
   // Map track
   { name: "globe", duration: 4, track: "map" },
   { name: "tokyo", duration: 5, track: "map" },
-  { name: "alps", duration: 5, track: "map" },
+  { name: "alps", duration: 5, track: "map", when: "desktop" },
   { name: "sahara", duration: 5, track: "map" },
-  { name: "nyc", duration: 5, track: "map" },
+  { name: "nyc", duration: 5, track: "map", when: "desktop" },
   { name: "amazon", duration: 5, track: "map" },
   { name: "globe-out", duration: 4, track: "map" },
 
@@ -88,12 +88,12 @@ const config: StepConfig[] = [
   { name: "buffer", duration: 1, track: "text" },
   { name: "text-tokyo", duration: 4, track: "text", easing: fadeInOut },
   { name: "buffer", duration: 1, track: "text" },
-  { name: "text-alps", duration: 4, track: "text", easing: fadeInOut },
-  { name: "buffer", duration: 1, track: "text" },
+  { name: "text-alps", duration: 4, track: "text", easing: fadeInOut, when: "desktop" },
+  { name: "buffer", duration: 1, track: "text", when: "desktop" },
   { name: "text-sahara", duration: 4, track: "text", easing: fadeInOut },
   { name: "buffer", duration: 1, track: "text" },
-  { name: "text-nyc", duration: 4, track: "text", easing: fadeInOut },
-  { name: "buffer", duration: 1, track: "text" },
+  { name: "text-nyc", duration: 4, track: "text", easing: fadeInOut, when: "desktop" },
+  { name: "buffer", duration: 1, track: "text", when: "desktop" },
   { name: "text-amazon", duration: 4, track: "text", easing: fadeInOut },
   { name: "buffer", duration: 1, track: "text" },
   { name: "outro", duration: 3, track: "text", easing: fadeIn },
@@ -103,7 +103,12 @@ const config: StepConfig[] = [
 /*  Timeline                                                           */
 /* ------------------------------------------------------------------ */
 
-const { scrollPercentage, opacities, totalSteps } = useTimeline(config);
+const { scrollPercentage, opacities, totalSteps } = useTimeline(config, {
+  breakpoints: {
+    mobile: "(max-width: 768px)",
+    desktop: "(min-width: 769px)",
+  },
+});
 
 const MAP_STEPS = [
   "globe",

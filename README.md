@@ -1,5 +1,10 @@
 # @multitrack
 
+[![npm @multitrack/core](https://img.shields.io/npm/v/@multitrack/core?label=%40multitrack%2Fcore)](https://www.npmjs.com/package/@multitrack/core)
+[![npm @multitrack/react](https://img.shields.io/npm/v/@multitrack/react?label=%40multitrack%2Freact)](https://www.npmjs.com/package/@multitrack/react)
+[![CI](https://github.com/jakhsu/multitrack/actions/workflows/ci.yml/badge.svg)](https://github.com/jakhsu/multitrack/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+
 A scroll-driven animation engine with a multi-track timeline architecture, inspired by video editing software.
 
 Originally built for a [production data journalism project](https://campaign.theinitium.com/20241031-china-land-subsidence/index.html/) at Initium Media — an interactive piece visualizing land subsidence across 82+ Chinese cities. The engine was hand-crafted without animation libraries because no existing tool supported the multi-track timeline model needed for the project. This repo extracts and generalizes that engine into a proper SDK.

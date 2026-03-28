@@ -222,7 +222,7 @@ importers:
   packages/react:
     dependencies:
       '@multitrack/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../core
       react:
         specifier: '>=18.0.0'

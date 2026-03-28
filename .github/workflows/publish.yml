@@ -1,14 +1,15 @@
-name: Publish
+name: Release
 
 on:
   push:
-    tags: ["v*"]
+    branches: [main]
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
+      pull-requests: write
       id-token: write
     steps:
       - uses: actions/checkout@v4
@@ -24,4 +25,9 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: pnpm test
-      - run: pnpm -r publish --access public --provenance --no-git-checks
+
+      - uses: changesets/action@v1
+        with:
+          publish: pnpm -r publish --access public --provenance
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

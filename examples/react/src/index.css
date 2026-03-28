@@ -267,6 +267,54 @@ body {
   color: #6ee7b7;
 }
 
+/* ------------------------------------------------------------------ */
+/*  Analytics demo panel                                                */
+/* ------------------------------------------------------------------ */
+
+.analytics-demo {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  z-index: 100;
+  min-width: 140px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.analytics-demo__title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 6px;
+}
+
+.analytics-demo__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.analytics-demo__label {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.analytics-demo__value {
+  color: #93c5fd;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Responsive                                                          */
+/* ------------------------------------------------------------------ */
+
 @media (max-width: 640px) {
   .text-panel {
     max-width: calc(100% - 32px);

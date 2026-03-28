@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { resolveSteps } from "@multitrack/core";
+import { createAnalyticsMiddleware } from "@multitrack/core/analytics";
 import type { StepConfig } from "@multitrack/react";
 import {
   MultitrackProvider,
@@ -142,6 +143,7 @@ export default function App() {
         <FixedStage>
           <Scene />
           <MiddlewareLog />
+          <AnalyticsDemo />
         </FixedStage>
       </ScrollContainer>
     </MultitrackProvider>
@@ -399,6 +401,59 @@ function MiddlewareLog() {
           {e.name}
         </div>
       ))}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  SDK Feature Demo: analytics middleware                              */
+/*  Batches step events and flushes them (logs to console in demo).    */
+/* ------------------------------------------------------------------ */
+
+function AnalyticsDemo() {
+  const timeline = useTimeline();
+  const [stats, setStats] = useState({ buffered: 0, flushed: 0 });
+
+  useEffect(() => {
+    const analytics = createAnalyticsMiddleware({
+      transport: (events) => {
+        console.log("[analytics] flushed", events.length, "events", events);
+        setStats((prev) => ({
+          buffered: 0,
+          flushed: prev.flushed + events.length,
+        }));
+      },
+      batchSize: 5,
+      flushInterval: 10_000,
+    });
+
+    // Wrap the middleware to track buffer count
+    const unsub = timeline.use((event, next) => {
+      analytics.middleware(event, () => {});
+      setStats((prev) => ({
+        ...prev,
+        buffered: prev.buffered + 1,
+      }));
+      next();
+    });
+
+    return () => {
+      unsub();
+      analytics.destroy();
+    };
+  }, [timeline]);
+
+  return (
+    <div className="analytics-demo">
+      <div className="analytics-demo__title">Analytics</div>
+      <div className="analytics-demo__row">
+        <span className="analytics-demo__label">Buffered</span>
+        <span className="analytics-demo__value">{stats.buffered}</span>
+      </div>
+      <div className="analytics-demo__row">
+        <span className="analytics-demo__label">Sent</span>
+        <span className="analytics-demo__value">{stats.flushed}</span>
+      </div>
     </div>
   );
 }

@@ -4,8 +4,6 @@ A scroll-driven animation engine with a multi-track timeline architecture, inspi
 
 Originally built for a [production data journalism project](https://theinitium.com/) at Initium Media — an interactive piece visualizing land subsidence across 82+ Chinese cities. The engine was hand-crafted without animation libraries because no existing tool supported the multi-track timeline model needed for the project. This repo extracts and generalizes that engine into a proper SDK.
 
-## Architecture
-
 ```
 @multitrack/core        Pure TypeScript engine. Zero dependencies.
     ↓                   Config → resolved steps → opacity calculations
@@ -15,21 +13,18 @@ Originally built for a [production data journalism project](https://theinitium.c
                         Visualizes tracks, playhead, active steps, event log.
 ```
 
-## How it works
-
-Define animations as data, not imperative code:
+## Quick start
 
 ```typescript
 import { MultitrackProvider, ScrollContainer, FixedStage, Show, useStep } from "@multitrack/react";
 import type { StepConfig } from "@multitrack/core";
 
 const config: StepConfig[] = [
-  // Main content track
   { name: "intro", duration: 3, track: "main", easing: "linear" },
   { name: "feature", duration: 5, track: "main" },
   { name: "outro", duration: 3, track: "main", easing: "linear" },
 
-  // Text overlay track (independent timeline)
+  // Independent text track — overlaps freely with main
   { name: "buffer", duration: 4, track: "text" },
   { name: "caption", duration: 3, track: "text" },
 ];
@@ -66,11 +61,11 @@ function IntroSection() {
 
 The scroll position acts as a playhead across parallel tracks. Each step has a duration (in viewport-heights), and the engine calculates opacity values for every step at every scroll position.
 
-## Core concepts
+## Features
 
 ### Multi-track timeline
 
-Like a video editor (Premiere Pro, Final Cut), each track maintains its own independent cursor:
+Like a video editor (Premiere Pro, Final Cut), each track maintains its own independent cursor. Steps on different tracks overlap freely — adding or removing steps on one track doesn't affect others.
 
 ```
 main track:  [intro:0-3][feature:3-8][outro:8-11]
@@ -78,75 +73,103 @@ text track:  [buffer:0-4][caption:4-7]
 accent:      [buffer:0-5][highlight:5-11]
 ```
 
-Steps on different tracks can overlap freely. Adding or removing steps on one track doesn't affect the others.
-
 ### Config-driven API
 
-Animations are defined declaratively using `StepConfig` objects. The engine resolves durations into absolute positions, calculates opacity for each step based on scroll progress, and lets React (or any framework) handle rendering.
+Animations are defined declaratively as data, not imperative code. The engine resolves durations into absolute positions, calculates opacity for each step based on scroll progress, and lets your framework handle rendering.
 
 ### Easing presets
 
+Built-in presets: `snap` (default — binary 0/1), `linear`, `easeIn`, `easeOut`, `easeInOut`. Or pass a custom function.
+
 ```typescript
-{ name: "fade-in", duration: 3, track: "main", easing: "linear" }    // smooth 0→1
-{ name: "appear", duration: 5, track: "main" }                        // snap (default): binary 0/1
-{ name: "custom", duration: 4, track: "main", easing: (t) => t * t }  // custom function
+{ name: "fade-in", duration: 3, track: "main", easing: "linear" }
+{ name: "appear", duration: 5, track: "main" }                        // snap (default)
+{ name: "custom", duration: 4, track: "main", easing: (t) => t * t }  // custom
 ```
 
-Built-in presets: `snap`, `linear`, `easeIn`, `easeOut`, `easeInOut`.
+### Middleware
 
-### Conditional predicates
+Intercept `step:enter` and `step:exit` events with `timeline.use()`. Call `next()` to pass through, or skip it to swallow the event.
 
-Replace the original `mobileOnly`/`desktopOnly` booleans with a generic condition:
+```typescript
+timeline.use((event, next) => {
+  analytics.track(event.type, event.payload.name);
+  next();
+});
+```
+
+### Scope cleanup
+
+Collect subscriptions into a scope and dispose them all at once — similar to GSAP's `gsap.context()`.
+
+```typescript
+const ctx = timeline.scope(() => {
+  timeline.on("step:enter", handleEnter);
+  timeline.on("scroll", handleScroll);
+  timeline.use(loggingMiddleware);
+});
+
+// later: clean up everything at once
+ctx.dispose();
+```
+
+### Responsive tracks
+
+Include or exclude steps based on named breakpoints tied to CSS media queries. Steps without `when` are always included.
+
+```typescript
+const timeline = new Timeline({
+  config: [
+    { name: "mobile-hero", duration: 5, track: "main", when: "mobile" },
+    { name: "desktop-hero", duration: 8, track: "main", when: "desktop" },
+    { name: "shared-outro", duration: 3, track: "main" },
+  ],
+  breakpoints: {
+    mobile: "(max-width: 767px)",
+    desktop: "(min-width: 768px)",
+  },
+});
+```
+
+The timeline automatically reconfigures when breakpoints change, emitting a `timeline:reconfigure` event.
+
+### Conditional steps
+
+For runtime conditions beyond media queries, use the `condition` predicate:
 
 ```typescript
 { name: "mobile-hero", duration: 5, track: "main", condition: () => window.innerWidth < 768 }
 ```
 
-## Packages
+### Dev-mode warnings
 
-### @multitrack/core
+In development, the engine validates your config and warns about common mistakes:
 
-Framework-agnostic engine. Use it standalone or build your own bindings.
+- Zero or negative duration steps
+- Using `snap` easing on long steps (likely unintended)
+- Lone tracks that might be typos
+- `when` references to undefined breakpoints
 
-```typescript
-import { Timeline } from "@multitrack/core";
+### Chrome DevTools extension
 
-const timeline = new Timeline({ config });
-timeline.start();
-timeline.on("scroll", ({ scrollPercentage }) => {
-  const opacities = timeline.getOpacities(scrollPercentage);
-  // opacities.intro === 0.75, opacities.feature === 0, etc.
-});
-timeline.on("step:enter", ({ name, track }) => { /* analytics, etc. */ });
-```
+Load `packages/devtools/dist/` as an unpacked extension to get:
 
-**Exports:** `Timeline`, `ScrollDriver`, `resolveSteps`, `calculateAllOpacities`, `calculateStepOpacity`, `getStepRange`, `getCurrentSteps`, easing functions, `MultitrackError`.
-
-### @multitrack/react
-
-React hooks and components.
-
-| Export | Description |
-|---|---|
-| `<MultitrackProvider>` | Context provider. Takes `config` and optional `devtools` flag. |
-| `<ScrollContainer>` | Tall scrollable div (`totalSteps × 100vh`). |
-| `<FixedStage>` | Fixed viewport stage. All animated content lives here. |
-| `<Show when="stepName">` | Conditional render — unmounts children when step opacity is 0. |
-| `useStep(name)` | Returns `{ opacity, isActive }` for a single step. |
-| `useOpacities()` | Returns all opacities as a typed record. |
-| `useScrollProgress()` | Returns `{ scrollPercentage, currentStep, totalSteps }`. |
-| `useTimeline()` | Direct access to the `Timeline` instance. |
-
-### @multitrack/devtools
-
-Chrome DevTools extension. Load the `packages/devtools/dist/` folder as an unpacked extension.
-
-Features:
 - Multi-track timeline visualization with color-coded step blocks
 - Red playhead following current scroll position
 - Active steps table with live opacity values
 - Event log showing step:enter / step:exit events
-- Hover tooltips with step name and range
+
+### Framework agnostic
+
+The core engine is pure TypeScript with zero dependencies. Use it standalone or with the provided React bindings. Vue, Svelte, and vanilla TypeScript examples are included in `examples/`.
+
+## Packages
+
+| Package | Description |
+|---|---|
+| [`@multitrack/core`](packages/core) | Framework-agnostic engine. `Timeline`, opacity calculations, scroll driver, easings, middleware, scopes. |
+| [`@multitrack/react`](packages/react) | React bindings. `MultitrackProvider`, `ScrollContainer`, `FixedStage`, `Show`, `useStep`, `useOpacities`, `useScrollProgress`, `useTimeline`. |
+| [`@multitrack/devtools`](packages/devtools) | Chrome DevTools extension. Timeline inspector panel. |
 
 ## How it differs from GSAP ScrollTrigger / Scrollama
 
@@ -164,39 +187,6 @@ Features:
 ```bash
 pnpm install
 pnpm build          # build all packages
-pnpm test           # run tests (33 tests across 4 suites)
+pnpm test           # run tests (67 tests across 8 suites)
 pnpm dev            # start example app
-```
-
-## Project structure
-
-```
-packages/
-  core/             @multitrack/core — pure TS engine
-    src/
-      types.ts        Type definitions
-      timeline.ts     Timeline facade class
-      resolve-steps.ts Step config → resolved positions
-      opacity.ts      Opacity calculation engine
-      scroll-driver.ts Scroll event management
-      easings.ts      Easing presets and resolver
-      emitter.ts      Typed event emitter
-      errors.ts       Structured error codes
-    __tests__/        33 unit tests
-  react/            @multitrack/react — React bindings
-    src/
-      provider.tsx    MultitrackProvider context
-      hooks.ts        useTimeline, useStep, useOpacities, useScrollProgress
-      components.tsx  ScrollContainer, FixedStage, Show
-  devtools/         @multitrack/devtools — Chrome extension
-    src/
-      manifest.json   Chrome extension manifest v3
-      panel/          DevTools panel UI (vanilla JS + CSS)
-      content-script.ts Page ↔ extension bridge
-      background.ts   Service worker message relay
-examples/
-  react/            React example (@multitrack/react bindings)
-  vue/              Vue 3 example (Composition API + @multitrack/core)
-  svelte/           Svelte 5 example (runes + @multitrack/core)
-  vanilla/          Vanilla TS example (pure @multitrack/core)
 ```

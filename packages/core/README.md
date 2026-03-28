@@ -98,6 +98,38 @@ const timeline = new Timeline({
 });
 ```
 
+### Scope cleanup
+
+Collect subscriptions into a scope and dispose them all at once — similar to GSAP's `gsap.context()`.
+
+```typescript
+const ctx = timeline.scope(() => {
+  timeline.on("step:enter", handleEnter);
+  timeline.on("scroll", handleScroll);
+  timeline.use(loggingMiddleware);
+});
+
+// later: clean up everything at once
+ctx.dispose();
+```
+
+### Conditional steps
+
+For runtime conditions beyond media queries, use the `condition` predicate. Steps where `condition` returns `false` are excluded from the resolved timeline.
+
+```typescript
+{ name: "mobile-hero", duration: 5, track: "main", condition: () => window.innerWidth < 768 }
+```
+
+### Dev-mode warnings
+
+In development, the engine validates your config and warns about common mistakes:
+
+- Zero or negative duration steps
+- Using `snap` easing on long steps (likely unintended)
+- Lone tracks that might be typos
+- `when` references to undefined breakpoints
+
 ## React bindings
 
 See [`@multitrack/react`](https://github.com/jakhsu/multitrack/tree/main/packages/react) for React hooks and components.

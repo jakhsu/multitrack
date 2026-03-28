@@ -91,6 +91,66 @@ A fixed-position overlay inside `ScrollContainer` for content that stays in the 
 
 Conditionally renders children when the named step is active (opacity > 0).
 
+### DevTools
+
+Enable the Chrome DevTools integration by passing the `devtools` prop to the provider:
+
+```tsx
+<MultitrackProvider config={config} devtools>
+  {children}
+</MultitrackProvider>
+```
+
+This exposes timeline state to the [@multitrack/devtools](https://github.com/jakhsu/multitrack/tree/main/packages/devtools) Chrome extension, giving you a live timeline inspector with playhead visualization, active step opacities, and an event log.
+
+## Full example with `useStep()`
+
+For fine-grained control over individual steps, use the `useStep()` hook to get `{ opacity, isActive }` and drive animations directly:
+
+```tsx
+import { MultitrackProvider, ScrollContainer, FixedStage, Show, useStep } from "@multitrack/react";
+import type { StepConfig } from "@multitrack/core";
+
+const config: StepConfig[] = [
+  { name: "intro", duration: 3, track: "main", easing: "linear" },
+  { name: "feature", duration: 5, track: "main" },
+  { name: "outro", duration: 3, track: "main", easing: "linear" },
+
+  // Independent text track — overlaps freely with main
+  { name: "buffer", duration: 4, track: "text" },
+  { name: "caption", duration: 3, track: "text" },
+];
+
+function App() {
+  return (
+    <MultitrackProvider config={config} devtools>
+      <ScrollContainer>
+        <FixedStage>
+          <Show when="intro">
+            <IntroSection />
+          </Show>
+          <Show when="feature">
+            <FeatureSection />
+          </Show>
+          <Show when="caption">
+            <Caption text="Tracks are independent." />
+          </Show>
+        </FixedStage>
+      </ScrollContainer>
+    </MultitrackProvider>
+  );
+}
+
+function IntroSection() {
+  const { opacity } = useStep("intro");
+  return (
+    <div style={{ opacity, transform: `translateY(${(1 - opacity) * 40}px)` }}>
+      <h1>Welcome</h1>
+    </div>
+  );
+}
+```
+
 ## License
 
 MIT

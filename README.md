@@ -30,7 +30,11 @@ Most scroll libraries trigger animations per-element. @multitrack thinks in **tr
 
 > **Try it now** — no install needed:
 >
-> [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/jakhsu/multitrack)
+> [![React](https://img.shields.io/badge/React-StackBlitz-087ea4?logo=react&logoColor=white)](https://stackblitz.com/github/jakhsu/multitrack?startScript=dev:react)
+> [![React + GSAP](https://img.shields.io/badge/React+GSAP-StackBlitz-88CE02?logo=react&logoColor=white)](https://stackblitz.com/github/jakhsu/multitrack?startScript=dev:react-gsap)
+> [![Vue](https://img.shields.io/badge/Vue-StackBlitz-4FC08D?logo=vuedotjs&logoColor=white)](https://stackblitz.com/github/jakhsu/multitrack?startScript=dev:vue)
+> [![Svelte](https://img.shields.io/badge/Svelte-StackBlitz-FF3E00?logo=svelte&logoColor=white)](https://stackblitz.com/github/jakhsu/multitrack?startScript=dev:svelte)
+> [![Vanilla TS](https://img.shields.io/badge/Vanilla_TS-StackBlitz-3178C6?logo=typescript&logoColor=white)](https://stackblitz.com/github/jakhsu/multitrack?startScript=dev:vanilla)
 
 ### Core only (any framework)
 
@@ -240,7 +244,7 @@ The core engine is pure TypeScript with zero dependencies. Use it standalone or 
 | [Vue](examples/vue) | Vue 3 + MapLibre | `pnpm dev:vue` |
 | [Svelte](examples/svelte) | Svelte 5 + MapLibre | `pnpm dev:svelte` |
 | [Vanilla](examples/vanilla) | Vanilla TS + MapLibre | `pnpm dev:vanilla` |
-| [React + GSAP](examples/react-gsap) | React + GSAP | `pnpm --filter @multitrack/example-react-gsap dev` |
+| [React + GSAP](examples/react-gsap) | React + GSAP | `pnpm dev:react-gsap` |
 
 ## Background
 

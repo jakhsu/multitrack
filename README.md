@@ -1,12 +1,32 @@
 # @multitrack
 
-[![npm @multitrack/core](https://img.shields.io/npm/v/@multitrack/core?label=%40multitrack%2Fcore)](https://www.npmjs.com/package/@multitrack/core)
-[![core minzip](https://badgen.net/bundlephobia/minzip/@multitrack/core)](https://bundlephobia.com/package/@multitrack/core)
-[![npm @multitrack/react](https://img.shields.io/npm/v/@multitrack/react?label=%40multitrack%2Freact)](https://www.npmjs.com/package/@multitrack/react)
-[![react minzip](https://badgen.net/bundlephobia/minzip/@multitrack/react)](https://bundlephobia.com/package/@multitrack/react)
+| Package | Version | Size |
+|---|---|---|
+| `@multitrack/core` | [![npm][core-v]][core-npm] | [![minzip][core-s]][core-bp] |
+| `@multitrack/react` | [![npm][react-v]][react-npm] | [![minzip][react-s]][react-bp] |
+| `@multitrack/vue` | [![npm][vue-v]][vue-npm] | [![minzip][vue-s]][vue-bp] |
+| `@multitrack/svelte` | [![npm][svelte-v]][svelte-npm] | [![minzip][svelte-s]][svelte-bp] |
+
 [![tree-shaking](https://badgen.net/bundlephobia/tree-shaking/@multitrack/core)](https://bundlephobia.com/package/@multitrack/core)
 [![CI](https://github.com/jakhsu/multitrack/actions/workflows/ci.yml/badge.svg)](https://github.com/jakhsu/multitrack/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+
+[core-v]: https://img.shields.io/npm/v/@multitrack/core?label=%40multitrack%2Fcore
+[core-npm]: https://www.npmjs.com/package/@multitrack/core
+[core-s]: https://badgen.net/bundlephobia/minzip/@multitrack/core
+[core-bp]: https://bundlephobia.com/package/@multitrack/core
+[react-v]: https://img.shields.io/npm/v/@multitrack/react?label=%40multitrack%2Freact
+[react-npm]: https://www.npmjs.com/package/@multitrack/react
+[react-s]: https://badgen.net/bundlephobia/minzip/@multitrack/react
+[react-bp]: https://bundlephobia.com/package/@multitrack/react
+[vue-v]: https://img.shields.io/npm/v/@multitrack/vue?label=%40multitrack%2Fvue
+[vue-npm]: https://www.npmjs.com/package/@multitrack/vue
+[vue-s]: https://badgen.net/bundlephobia/minzip/@multitrack/vue
+[vue-bp]: https://bundlephobia.com/package/@multitrack/vue
+[svelte-v]: https://img.shields.io/npm/v/@multitrack/svelte?label=%40multitrack%2Fsvelte
+[svelte-npm]: https://www.npmjs.com/package/@multitrack/svelte
+[svelte-s]: https://badgen.net/bundlephobia/minzip/@multitrack/svelte
+[svelte-bp]: https://bundlephobia.com/package/@multitrack/svelte
 
 A scroll-driven animation engine with a multi-track timeline architecture, inspired by video editing software.
 
@@ -24,7 +44,7 @@ Most scroll libraries trigger animations per-element. @multitrack thinks in **tr
 | **Tracks** | Independent parallel timelines | Single trigger per element | N/A |
 | **Dependencies** | Zero (core) | GSAP required | IntersectionObserver polyfill |
 | **Devtools** | Chrome extension with timeline panel | Browser plugin | None |
-| **Framework** | Agnostic core + React bindings | Framework-agnostic | Framework-agnostic |
+| **Framework** | Agnostic core + React, Vue, Svelte bindings | Framework-agnostic | Framework-agnostic |
 
 ## Get started
 
@@ -46,6 +66,18 @@ npm install @multitrack/core
 
 ```bash
 npm install @multitrack/core @multitrack/react
+```
+
+### Vue
+
+```bash
+npm install @multitrack/core @multitrack/vue
+```
+
+### Svelte
+
+```bash
+npm install @multitrack/core @multitrack/svelte
 ```
 
 ## Quick start: Core
@@ -217,7 +249,7 @@ See [core docs](packages/core#dev-mode-warnings) for details.
 
 ### Framework agnostic
 
-The core engine is pure TypeScript with zero dependencies. Use it standalone or with the provided React bindings. Vue, Svelte, and vanilla TypeScript examples are included in [`examples/`](examples).
+The core engine is pure TypeScript with zero dependencies. Use it standalone or with the provided React, Vue, and Svelte bindings. Vanilla TypeScript examples are included in [`examples/`](examples).
 
 ## Packages
 
@@ -225,6 +257,8 @@ The core engine is pure TypeScript with zero dependencies. Use it standalone or 
 @multitrack/core        Pure TypeScript engine. Zero dependencies.
     ↓                   Config → resolved steps → opacity calculations
 @multitrack/react       React bindings. Provider, hooks, components.
+@multitrack/vue         Vue 3 composables. useMultitrack(), useStep().
+@multitrack/svelte      Svelte 5 bindings. Runes-based reactivity.
     ↓                   useStep(), useOpacities(), <Show>, <ScrollContainer>
 @multitrack/devtools    Chrome DevTools extension. Timeline inspector panel.
                         Visualizes tracks, playhead, active steps, event log.
@@ -234,6 +268,8 @@ The core engine is pure TypeScript with zero dependencies. Use it standalone or 
 |---|---|
 | [`@multitrack/core`](packages/core) | Framework-agnostic engine. `Timeline`, opacity calculations, scroll driver, easings, middleware, scopes. |
 | [`@multitrack/react`](packages/react) | React bindings. `MultitrackProvider`, `ScrollContainer`, `FixedStage`, `Show`, `useStep`, `useOpacities`, `useScrollProgress`, `useTimeline`. |
+| [`@multitrack/vue`](packages/vue) | Vue 3 bindings. `useMultitrack`, `useStep`, `useOpacities`, `useScrollProgress`. |
+| [`@multitrack/svelte`](packages/svelte) | Svelte 5 bindings. Runes-based `createMultitrack`, `createStep`, `createOpacities`, `createScrollProgress`. |
 | [`@multitrack/devtools`](packages/devtools) | Chrome DevTools extension. Timeline inspector panel. |
 
 ## Examples

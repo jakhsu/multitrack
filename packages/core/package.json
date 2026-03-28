@@ -1,6 +1,6 @@
 {
   "name": "@multitrack/core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A scroll-driven animation engine with multi-track timeline architecture",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -28,7 +28,9 @@
       }
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch"

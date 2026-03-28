@@ -2,7 +2,7 @@
 
 A scroll-driven animation engine with a multi-track timeline architecture, inspired by video editing software.
 
-Originally built for a [production data journalism project](https://theinitium.com/) at Initium Media — an interactive piece visualizing land subsidence across 82+ Chinese cities. The engine was hand-crafted without animation libraries because no existing tool supported the multi-track timeline model needed for the project. This repo extracts and generalizes that engine into a proper SDK.
+Originally built for a [production data journalism project](https://campaign.theinitium.com/20241031-china-land-subsidence/index.html/) at Initium Media — an interactive piece visualizing land subsidence across 82+ Chinese cities. The engine was hand-crafted without animation libraries because no existing tool supported the multi-track timeline model needed for the project. This repo extracts and generalizes that engine into a proper SDK.
 
 ```
 @multitrack/core        Pure TypeScript engine. Zero dependencies.

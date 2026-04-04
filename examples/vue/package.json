@@ -12,7 +12,7 @@
     "@multitrack/core": "workspace:*",
     "@multitrack/vue": "workspace:*",
     "maplibre-gl": "^4.7.1",
-    "vue": "^3.5.0"
+    "vue": "^3.5.32"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.5",

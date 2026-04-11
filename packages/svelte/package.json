@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@sveltejs/package": "^2.0.0",
-    "svelte": "^5.46.4"
+    "svelte": "^5.55.3"
   },
   "sideEffects": false,
   "license": "MIT",
